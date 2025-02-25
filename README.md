@@ -68,7 +68,7 @@ This is the backend service for a task management platform, built using Node.js 
 - Validation with Joi to ensure proper data format  
 
 ## Deployment  
-- The project is deployed on **Render/Replit/Railway**.  
+- The project is deployed on **Render**.  
 - API base URL: `<deployed-url>`  
 
 ## Contributors  
