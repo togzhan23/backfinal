@@ -1,19 +1,17 @@
-<<<<<<< HEAD
-# backfinal
-=======
-# NoSQL  
-# Blogging Platform Backend  
 
-Final assignment for Advanced Databases (NoSQL). Teamwork by Togzhan Oral and Yelnura Akhmetova.  
+# Task Manager Backend  
+
+Final project for the Task Manager application. Team collaboration project.
 
 ## Overview  
-This is the backend service for a blogging platform, built using Node.js and Express. It provides APIs for user authentication and blog management, utilizing MongoDB as the database.  
+This is the backend service for a task management platform, built using Node.js and Express. It provides APIs for user authentication and task management, utilizing MongoDB as the database.  
 
 ## Features  
 - User authentication (JWT-based)  
-- Blog management (Create, Read, Update, Delete blogs)  
+- Task management (Create, Read, Update, Delete tasks)  
 - Input validation  
 - Secure password hashing  
+- Role-based access control (RBAC)  
 - Cross-Origin Resource Sharing (CORS) enabled  
 
 ## Technologies Used  
@@ -21,20 +19,19 @@ This is the backend service for a blogging platform, built using Node.js and Exp
 - MongoDB (via Mongoose ODM)  
 - JWT for authentication  
 - bcryptjs for password hashing  
-- Express Validator for input validation  
+- Joi for input validation  
 - dotenv for environment variable management  
-
 
 ## Installation
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/togzhan23/nosql-.git
+   git clone <repository-url>
    ```
 
 2. Navigate to the project directory:
    ```sh
-   cd blogging-platform-backend
+   cd task-manager
    ```
 
 3. Install dependencies:
@@ -44,28 +41,41 @@ This is the backend service for a blogging platform, built using Node.js and Exp
 
 4. Create a `.env` file and configure it:
    ```sh
-   MONGO_URI=mongodb://127.0.0.1:27017/todo
-   JWT_SECRET=your_secret_key
+   MONGO_URI=<your-mongodb-connection-string>
+   JWT_SECRET=<your-secret-key>
    ```
 
 5. Start the server:
    ```sh
    npm start
-   
-
+   ```
 
 ## API Endpoints
 ### Authentication
-- POST /api/auth/register - Register a new user
-- POST /api/auth/login - User login (returns JWT token)
+- `POST /register` - Register a new user  
+- `POST /login` - User login (returns JWT token)  
 
 ### Tasks
-- GET /api/blogs - Fetch all blogs (Authenticated users only)
-- POST /api/tasks - Create a new blog
-- PUT /api/tasks/:id - Update a blog
-- DELETE /api/tasks/:id - Delete a blog 
+- `GET /tasks` - Fetch all tasks (Authenticated users only)  
+- `POST /tasks` - Create a new task  
+- `PUT /tasks/:id` - Update a task  
+- `DELETE /tasks/:id` - Delete a task  
 
-## License
-This project is licensed under the ISC License.
+## Security Measures
+- JWT authentication to secure private routes  
+- Password hashing with bcrypt  
+- Role-based access control (RBAC)  
+- Validation with Joi to ensure proper data format  
 
->>>>>>> 8501b6a (Initial commit from OLD_REPO)
+## Deployment  
+- The project is deployed on **Render/Replit/Railway**.  
+- API base URL: `<deployed-url>`  
+
+## Contributors  
+- Team Members: *Raikhan Berkenova, Yelnura Akhmetova, Togzhan Oral*  
+
+## License  
+This project is licensed under the MIT License.  
+
+
+
