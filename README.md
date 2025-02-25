@@ -4,7 +4,7 @@
 Final project for the Task Manager application. Team collaboration project.
 
 ## Overview  
-This is the backend service for a task management platform, built using Node.js and Express. It provides APIs for user authentication and task management, utilizing MongoDB as the database.  
+This is the backend service for a task management platform, built using Node.js and Express. It provides APIs for user authentication and task management, utilizing MongoDB as the database. The project follows a modular structure, separating routes, models, controllers, middleware, and configurations to ensure maintainability and scalability.The application is designed to be deployed on cloud platforms like Render, Replit, or Railway, with environment variables used for storing sensitive information such as database connection strings and JWT secrets.
 
 ## Features  
 - User authentication (JWT-based)  
@@ -26,7 +26,7 @@ This is the backend service for a task management platform, built using Node.js 
 
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
+   git clone <https://github.com/togzhan23/backfinal>
    ```
 
 2. Navigate to the project directory:
@@ -41,8 +41,8 @@ This is the backend service for a task management platform, built using Node.js 
 
 4. Create a `.env` file and configure it:
    ```sh
-   MONGO_URI=<your-mongodb-connection-string>
-   JWT_SECRET=<your-secret-key>
+   MONGO_URI=mongodb://127.0.0.1:27017/task-manager
+   JWT_SECRET=my_super_secret_key
    ```
 
 5. Start the server:
