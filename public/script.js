@@ -1,19 +1,34 @@
 const API_URL = "http://localhost:3000/tasks";
+const USER_API_URL = "http://localhost:3000/users/profile";
 const token = localStorage.getItem("token");
 
-// 🔹 **Redirect to login if no token**
 if (!token) {
     window.location.href = "login.html";
 }
 
-// 🔹 **Show messages in UI**
 function showMessage(message, isError = true) {
     const msgElement = document.getElementById("message");
     msgElement.innerText = message;
     msgElement.className = isError ? "error-message" : "success-message";
 }
 
-// 🔹 **Fetch User's Tasks**
+async function fetchUserProfile() {
+    const response = await fetch(USER_API_URL, {
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (!response.ok) {
+        alert("Session expired. Please log in again.");
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const user = await response.json();
+    document.getElementById("username").innerText = user.username;
+    document.getElementById("email").innerText = user.email;
+}
+
 async function fetchTasks() {
     const response = await fetch(API_URL, {
         headers: { "Authorization": `Bearer ${token}` }
@@ -28,7 +43,7 @@ async function fetchTasks() {
 
     const tasks = await response.json();
     const taskList = document.getElementById("taskList");
-    taskList.innerHTML = ""; // Clear previous tasks
+    taskList.innerHTML = "";
 
     tasks.forEach(task => {
         const li = document.createElement("li");
@@ -43,33 +58,18 @@ async function fetchTasks() {
     });
 }
 
-// 🔹 **Client-side Validation**
-function validateTask(title, description) {
-    if (!title || title.length < 3) {
-        alert("Title must be at least 3 characters.");
-        return false;
-    }
-    if (title.length > 100) {
-        alert("Title must be less than 100 characters.");
-        return false;
-    }
-    if (description && description.length > 500) {
-        alert("Description must be less than 500 characters.");
-        return false;
-    }
-    return true;
-}
-
-// 🔹 **Create Task**
 async function createTask() {
-    const title = document.getElementById("taskTitle").value;
-    const description = document.getElementById("taskDescription").value;
+    const title = document.getElementById("taskTitle").value.trim();
+    const description = document.getElementById("taskDescription").value.trim();
 
-    if (!validateTask(title, description)) return;
+    if (!title || !description) {
+        alert("Please enter both title and description.");
+        return;
+    }
 
     const response = await fetch(API_URL, {
         method: "POST",
-        headers: { 
+        headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
@@ -77,40 +77,29 @@ async function createTask() {
     });
 
     if (!response.ok) {
-        const data = await response.json();
-        alert(data.message || "Error creating task.");
+        alert("Error creating task.");
         return;
     }
 
+    // Очищаем поля ввода после успешного добавления
     document.getElementById("taskTitle").value = "";
     document.getElementById("taskDescription").value = "";
-    fetchTasks();
+
+    fetchTasks(); // Перезагружаем список задач
 }
 
-// 🔹 **Edit Task (Show Inputs)**
-function editTask(id) {
-    const taskElement = document.getElementById(`task-${id}`);
-    const title = document.getElementById(`title-${id}`).innerText;
-    const description = document.getElementById(`desc-${id}`).innerText;
+async function editTask(taskId) {
+    const newTitle = prompt("Enter new task title:");
+    const newDescription = prompt("Enter new task description:");
 
-    taskElement.innerHTML = `
-        <input type="text" id="edit-title-${id}" class="task-input" value="${title}" />
-        <input type="text" id="edit-desc-${id}" class="task-input" value="${description}" />
-        <button class="edit-btn" onclick="updateTask('${id}')">Save</button>
-        <button class="cancel-btn" onclick="fetchTasks()">Cancel</button>
-    `;
-}
+    if (!newTitle || !newDescription) {
+        alert("Title and description cannot be empty!");
+        return;
+    }
 
-// 🔹 **Update Task**
-async function updateTask(id) {
-    const newTitle = document.getElementById(`edit-title-${id}`).value;
-    const newDescription = document.getElementById(`edit-desc-${id}`).value;
-
-    if (!validateTask(newTitle, newDescription)) return;
-
-    const response = await fetch(`${API_URL}/${id}`, {
+    const response = await fetch(`${API_URL}/${taskId}`, {
         method: "PUT",
-        headers: { 
+        headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
@@ -118,19 +107,21 @@ async function updateTask(id) {
     });
 
     if (!response.ok) {
-        const data = await response.json();
-        alert(data.message || "Error updating task.");
+        alert("Error updating task.");
         return;
     }
 
-    fetchTasks();
+    fetchTasks(); // Обновляем список задач
 }
 
-// 🔹 **Delete Task**
-async function deleteTask(id) {
-    const response = await fetch(`${API_URL}/${id}`, { 
+async function deleteTask(taskId) {
+    if (!confirm("Are you sure you want to delete this task?")) return;
+
+    const response = await fetch(`${API_URL}/${taskId}`, {
         method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
     });
 
     if (!response.ok) {
@@ -138,14 +129,51 @@ async function deleteTask(id) {
         return;
     }
 
-    fetchTasks();
+    fetchTasks(); // Обновляем список задач
 }
 
-// 🔹 **Logout Function**
+
+function openPopup() {
+    document.getElementById("profilePopup").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("profilePopup").style.display = "none";
+}
+
+async function updateProfile() {
+    const newUsername = document.getElementById("newUsername").value.trim();
+    if (!newUsername) {
+        alert("Username cannot be empty!");
+        return;
+    }
+
+    const response = await fetch(USER_API_URL, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ username: newUsername })
+    });
+
+    if (!response.ok) {
+        alert("Error updating profile.");
+        return;
+    }
+
+    fetchUserProfile();
+    closePopup();
+}
+
 function logout() {
     localStorage.removeItem("token");
     window.location.href = "index.html";
 }
 
-// 🔹 **Load Tasks on Page Load**
-document.addEventListener("DOMContentLoaded", fetchTasks);
+document.addEventListener("DOMContentLoaded", () => {
+    fetchTasks();
+    fetchUserProfile();
+
+    document.getElementById("openProfilePopup").addEventListener("click", openPopup);
+});
