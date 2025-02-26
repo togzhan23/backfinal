@@ -5,6 +5,7 @@ const cors = require('cors');
 const authMiddleware = require('./middleware/authMiddleware');
 const Task = require('./models/Task');
 const path = require('path');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 app.use(express.json());
@@ -12,12 +13,13 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://127.0.0.1:27017/todo', {
+mongoose.connect('mongodb://127.0.0.1:27017/task_manager', {
 })
 .then(() => console.log('MongoDB Connected'))
 .catch(err => console.log(err));
 
 app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
 
 app.post('/tasks', authMiddleware, async (req, res) => {
   try {
