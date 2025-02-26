@@ -69,7 +69,7 @@ This is the backend service for a task management platform, built using Node.js 
 
 ## Deployment  
 - The project is deployed on **Render**.  
-- API base URL: `<https://backfinal-7yfg.onrender.com>`  
+- API base URL: `https://backfinal-7yfg.onrender.com`  
 
 ## Contributors  
 - Team Members: *Raikhan Berkenova, Yelnura Akhmetova, Togzhan Oral*  
