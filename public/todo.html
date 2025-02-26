@@ -1,29 +1,52 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Blog</title> 
-    <link rel="stylesheet" href="styles.css"> 
-</head> 
-<body> 
- 
-    <h1>Penfinity</h1> 
- 
-    <!-- Форма добавления задачи --> 
-    <div> 
-        <input type="text" id="taskTitle" placeholder="Post Title"> 
-        <input type="text" id="taskDescription" placeholder="Post Description"> 
-        <button id="addTaskBtn" onclick="createTask()">Add Post</button> 
-    </div> 
- 
-    <!-- Список задач --> 
-    <ul id="taskList"></ul> 
- 
-    <button onclick="logout()" class="logout-btn">Logout</button> 
- 
- 
-    <script src="script.js"></script> 
- 
-</body> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <!-- User Profile Section -->
+        <div class="profile-card">
+            <h2>Welcome, <span id="username">User</span></h2>
+            <p>Email: <span id="email">user@example.com</span></p>
+            <button id="openProfilePopup" class="btn">Edit Profile</button>
+        </div>
+       
+
+        
+        <!-- Task Manager Section -->
+        <div class="task-manager">
+            <h1>Task Manager</h1>
+            <div class="task-input">
+                <input type="text" id="taskTitle" placeholder="Enter task title">
+                <input type="text" id="taskDescription" placeholder="Enter task description">
+                <button id="addTaskBtn" onclick="createTask()" class="btn">Add Task</button>
+            </div>
+            
+            <ul id="taskList" class="task-list"></ul>
+        </div>
+
+        <!-- Logout Button -->
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+
+    <!-- Profile Update Popup -->
+    <div id="profilePopup" class="popup">
+        <div class="popup-content">
+            <h3>Update Username</h3>
+            <input type="text" id="newUsername" placeholder="New Username">
+            <div class="popup-buttons">
+                <button onclick="updateProfile()" class="btn">Save</button>
+                <button onclick="closePopup()" class="btn btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
 </html>
